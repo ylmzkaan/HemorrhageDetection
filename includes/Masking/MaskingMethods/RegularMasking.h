@@ -4,13 +4,12 @@
 #include <stdexcept>
 #include <SimpleITK.h>
 
-using namespace std;
 namespace sitk = itk::simple;
 
 class RegularMasking : public MaskingStrategy 
 {
     private:
-	const string regionGrowingSeedType;
+	const std::string regionGrowingSeedType;
 	const int regionGrowingLowerThreshold;
 	const int regionGrowingUpperThreshold;
 
@@ -23,7 +22,7 @@ class RegularMasking : public MaskingStrategy
     sitk::ExtractImageFilter                extractImage;
 
     public:
-	RegularMasking(sitk::Image &image, const string &regionGrowingSeedType,
+	RegularMasking(sitk::Image &image, const std::string &regionGrowingSeedType,
 					const int &regionGrowingLowerThreshold,
 					const int &regionGrowingUpperThreshold);
 	void run()

@@ -10,15 +10,17 @@
 #include <SimpleITK.h>
 #include <string>
 
-using namespace std;
 namespace sitk = itk::simple;
 
+/*
+Any operation that will do masking operations whould inherit this class
+*/
 class Masking : public Command
 {
     private:
-	shared_ptr<MaskingStrategy> maskingMethod;
+	std::shared_ptr<MaskingStrategy> maskingMethod;
 
     public:
-	Masking(shared_ptr<Chain> chain);
+	Masking(std::shared_ptr<Chain> chain);
 	bool execute();
 };

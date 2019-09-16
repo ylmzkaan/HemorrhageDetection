@@ -1,11 +1,9 @@
 #include "../includes/IO.h"
 #include <iostream>
 
-using namespace std; 
-
 sitk::Image readDicomSeries(const std::string& dicomDirectory) 
 {
-    cout << "Reading DICOM series." << endl;
+    std::cout << "Reading DICOM series." << std::endl;
 
     sitk::ImageSeriesReader reader;
     reader.MetaDataDictionaryArrayUpdateOn();
@@ -15,7 +13,7 @@ sitk::Image readDicomSeries(const std::string& dicomDirectory)
 
     sitk::Image image = reader.Execute();
 
-    cout << "DICOM series are read successfully." << endl;
+    std::cout << "DICOM series are read successfully." << std::endl;
 
     return image;
 }

@@ -5,8 +5,6 @@ project(BrainDamageAnalysis)
 set(SimpleITK_DIR ~/Projects/SimpleITK-build/lib/cmake/SimpleITK-1.3)
 set(ITK_DIR ~/Projects/SimpleITK-build/ITK-build)
 
-set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
-
 find_package(SimpleITK REQUIRED)
 find_package(ITK REQUIRED)
 include(${ITK_USE_FILE})

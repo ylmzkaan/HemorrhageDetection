@@ -1,6 +1,8 @@
 #pragma once
 #include "../MaskingStrategy.h"
-//#include "../../Helper.h"
+#include "itkConnectedComponentImageFilter.h"
+#include "itkLabelShapeKeepNObjectsImageFilter.h"
+#include <sitkDiscreteGaussianImageFilter.h>
 #include <itkBinaryThresholdImageFilter.h>
 #include <itkImageRegionIterator.h>
 #include <itkImageRegionConstIterator.h>
@@ -15,17 +17,20 @@
 #include <math.h>
 
 namespace sitk = itk::simple;
-using namespace std;
 
 using InputPixelType = int;
 using MaskPixelType = uint8_t;
 using InputImageType = itk::Image< InputPixelType,  3 >;
+using InputImage2DType = itk::Image< InputPixelType,  2 >;
 using MaskImage2DType = itk::Image< MaskPixelType, 2 >;
 using MaskImageType = itk::Image< MaskPixelType, 3 >;
 
 using FilterType = itk::BinaryThresholdImageFilter< InputImageType, MaskImageType >;
 using ExtractFilterType = itk::ExtractImageFilter< MaskImageType, MaskImage2DType >;
-using TileImageFilterType = itk::TileImageFilter< MaskImage2DType, MaskImageType >;
+using TileMaskFilterType = itk::TileImageFilter< MaskImage2DType, MaskImageType >;
+using TileImageFilterType = itk::TileImageFilter< InputImage2DType, InputImageType >;
+using ConnectedComponentImageFilterType = itk::ConnectedComponentImageFilter < MaskImage2DType, InputImage2DType >;
+using LabelShapeKeepNObjectsImageFilterType = itk::LabelShapeKeepNObjectsImageFilter< InputImage2DType >;
 
 using iterType = itk::ImageRegionIterator<MaskImage2DType>;
 using constIterType = itk::ImageRegionConstIterator<MaskImage2DType>;
@@ -41,9 +46,14 @@ class RayMasking : public MaskingStrategy
     const InputPixelType boneLowerThreshold = 300;
     const InputPixelType boneUpperThreshold = 2000;
 
-    sitk::CastImageFilter               caster;
-    sitk::BinaryThresholdImageFilter    binaryThresholdImageFilter;
-    TileImageFilterType::Pointer        tileFilter = TileImageFilterType::New();
+    sitk::CastImageFilter                           caster;
+    sitk::BinaryThresholdImageFilter                binaryThresholdImageFilter;
+    sitk::DiscreteGaussianImageFilter               gaussianFilter;
+
+    TileMaskFilterType::Pointer                     tileMaskFilter = TileMaskFilterType::New();
+    TileImageFilterType::Pointer                    tileFilter = TileImageFilterType::New();
+    ConnectedComponentImageFilterType::Pointer      connCompFilter = ConnectedComponentImageFilterType::New();
+    LabelShapeKeepNObjectsImageFilterType::Pointer  labelShapeKeepNObjectsImageFilter = LabelShapeKeepNObjectsImageFilterType::New();
 
     public:
 
@@ -53,5 +63,6 @@ class RayMasking : public MaskingStrategy
     private:
 
     sitk::Image isolateIntracranialVoxels(sitk::Image &initialMask, sitk::Image &boneMask);
-    
+    sitk::Image LCC( sitk::Image inputMask, int axis);
+    void sitkToBinaryItk( const sitk::Image &image, MaskImageType::Pointer &outputImage );    
 };

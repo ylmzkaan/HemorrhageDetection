@@ -1,6 +1,5 @@
 #include "../includes/Masking/Masking.h"
 
-using namespace std;
 namespace sitk = itk::simple;
 
 bool Masking::execute()
@@ -35,6 +34,6 @@ Masking::Masking(shared_ptr<Chain> chain) : Command(chain)
     }
     else
     {
-        cout << "Wrong masking strategy specified in parameters." << endl;
+        std::cout << "Wrong masking strategy specified in parameters." << std::endl;
     }
 }

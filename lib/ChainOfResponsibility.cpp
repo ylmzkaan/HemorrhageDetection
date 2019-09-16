@@ -2,18 +2,18 @@
 #include "../includes/Masking/Masking.h"
 #include <iostream>
 
-void Chain::addCommandByName(const string& name)
+void Chain::addCommandByName(const std::string& name)
 {
     if (name == "masking")
     {
-        cout << "Adding masking command." << endl;
+        std::cout << "Adding masking command." << std::endl;
 
-        shared_ptr<Command> maskingCommand = make_shared<Masking>(shared_ptr<Chain>(this));
+        std::shared_ptr<Command> maskingCommand = std::make_shared<Masking>(std::shared_ptr<Chain>(this));
         commandList.push_back(maskingCommand);
     } 
     else
     {
-	    cout << "Wrong command type" << endl;
+	    std::cout << "Wrong command type" << std::endl;
     }
 }
 
@@ -21,14 +21,14 @@ bool Chain::execute()
 {
     if (commandList.size() == 0)
     {
-        cout << "No command added yet. Exiting." << endl;
+        std::cout << "No command added yet. Exiting." << std::endl;
         return false;
     }
 
     bool ok = true;
 
-    cout << "Starting execution." << endl;
-    for (shared_ptr<Command>& command : commandList)
+    std::cout << "Starting execution." << std::endl;
+    for (std::shared_ptr<Command>& command : commandList)
     {
         ok = command->execute();
         if (ok == false)
@@ -55,7 +55,7 @@ Parameters::Parameters()
     params["regularMaskingRegionGrowingLowerThreshold"] = "0";
     params["regularMaskingRegionGrowingUpperThreshold"] = "80";
 }
-void Parameters::setParameter(string key, string value) { params[key] = value; }
-string Parameters::getValue(string key) { return params[key]; }
+void Parameters::setParameter(std::string key, std::string value) { params[key] = value; }
+std::string Parameters::getValue(std::string key) { return params[key]; }
 void Parameters::validateParameters() {}
 

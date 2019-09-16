@@ -11,7 +11,7 @@ bool sitkImageToItkImage(sitk::Image &image, itk::Image< int, 3 >::Pointer itkIm
 
     if ( itkImage.IsNull() )
     {
-        cerr << "Unexpected error converting SimpleITK image to ITK image!" << endl;
+        std::cerr << "Unexpected error converting SimpleITK image to ITK image!" << std::endl;
         return false;
     }
 

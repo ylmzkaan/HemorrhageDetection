@@ -9,7 +9,7 @@ bool Masking::execute()
     return true;
 }
 
-Masking::Masking(shared_ptr<Chain> chain) : Command(chain)
+Masking::Masking(std::shared_ptr<Chain> chain) : Command(chain)
 {   
     sitk::Image image = this->chain->getImage();
     Parameters params = this->chain->getParameters();
@@ -19,18 +19,18 @@ Masking::Masking(shared_ptr<Chain> chain) : Command(chain)
         auto regionGrowingSeed = params.getValue("regularMaskingRegionGrowingSeedType");
         if (regionGrowingSeed != "center")
         {
-            ostringstream stream;
+            std::ostringstream stream;
             stream << regionGrowingSeed << " specified as regularMaskingRegionGrowingSeed parameter is a wrong input argument."; 
-            throw invalid_argument(stream.str());
+            throw std::invalid_argument(stream.str());
         }
 
         double regionGrowingLowerThreshold = stod(params.getValue("regularMaskingRegionGrowingLowerThreshold"), nullptr);
         double regionGrowingUpperThreshold = stod(params.getValue("regularMaskingRegionGrowingUpperThreshold"), nullptr);
-        maskingMethod = make_shared<RegularMasking>(image, regionGrowingSeed, regionGrowingLowerThreshold, regionGrowingUpperThreshold);
+        maskingMethod = std::make_shared<RegularMasking>(image, regionGrowingSeed, regionGrowingLowerThreshold, regionGrowingUpperThreshold);
     }
     else if ( params.getValue("maskingStrategy") == "rayCasting" )
     {
-        maskingMethod = make_shared<RayMasking>(image);
+        maskingMethod = std::make_shared<RayMasking>(image);
     }
     else
     {

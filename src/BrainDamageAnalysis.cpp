@@ -18,9 +18,6 @@ The main idea of the algorithm is that if 7 of 8 rays (equally spread with 45 de
 then one can conclude that the pixel is enclosed by skull and belongs to intracrnial area.
 
 
-*/
-
-/*
 The program flow implements the chain of responsibility design pattern. A chain has commands which can be "masking", "classification" etc. 
 But for the moment only the "masking" command is implemented.
 
